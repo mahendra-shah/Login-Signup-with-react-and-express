@@ -1,10 +1,43 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, {useEffect} from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import './Login.css'
 
 const Login = ({signupData}) => {
+  const navigate = useNavigate()
+  const {handleLoginTxt, loginTxt, isLoggedIn, toggleLoggedIn}=signupData
 
-  const {handleLoginTxt, handleLogin}=signupData
+  async function handleLogin(e) {
+    e.preventDefault()
+    try{
+      console.log(loginTxt)
+      const response = await fetch("http://localhost:3333/auth/user/signin", {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify(loginTxt)
+      })
+  
+      const AuthData = await response.json()
+      if(AuthData.success){
+        localStorage.setItem("token", AuthData.authToken)
+        toggleLoggedIn(true)
+        navigate("/")
+      
+      }
+    
+
+    }catch(err){
+      console.log(err.message)
+    }
+    
+  }
+
+  useEffect(()=>{
+    if(isLoggedIn){
+      navigate("/")
+    }
+  })
 
   return (
     <>

@@ -1,17 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Routing from './components/Routers/Routing';
 
 function App() {
+  const [isLoggedIn, toggleLoggedIn] = useState(false)
+  
   //Signup state
   const [inputs, setInputs] = useState({
-    fName:"",
-    lName:"",
+    firstName:"",
+    lastName:"",
     email:"",
     password:"",
-    cpassword:"",
   })
-  const [register, setRegister] = useState([])
 
   const handleChange = (e)=>{
     setInputs(prev=>{
@@ -19,15 +19,21 @@ function App() {
     })
   }
 
-  const handleSubmit = (e)=>{
+  const handleSubmit = async(e)=>{
     e.preventDefault()
-    setRegister([...register, inputs])
+    const response = await fetch("http://localhost:3333/auth/user/signup", {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify(inputs)
+    })
+    const returnedData = await response.json()
     setInputs({
-      fName:"",
-    lName:"",
-    email:"",
-    password:"",
-    cpassword:"",
+      firstName:"",
+      lastName:"",
+      email:"",
+      password:"",
     })
   }
   
@@ -42,10 +48,28 @@ function App() {
   }
 
   //waiting for fetch
-  function handleLogin(e) {
-    e.preventDefault()
+  // async function handleLogin(e) {
+  //   e.preventDefault()
+  //   try{
+  //       const response = await fetch("http://localhost:3333/auth/user/signin", {
+  //       method:"POST",
+  //       headers:{
+  //         "Content-Type":"application/json"
+  //       },
+  //       body:JSON.stringify(loginTxt)
+  //     })
+  
+  //     const AuthData = await response.json()
+  //     if(AuthData.success){
+  //       localStorage.setItem("token", AuthData.authToken)
+  //     }
+
+  //   }catch(err){
+  //     console.log(err.message)
+  //   }
     
-  }
+  // }
+ 
   
   return (
 
@@ -55,7 +79,10 @@ function App() {
               handleChange,
               handleSubmit,
               handleLoginTxt,
-              handleLogin
+              // handleLogin
+              loginTxt,
+              isLoggedIn,
+              toggleLoggedIn
         }} />
         
     </div>

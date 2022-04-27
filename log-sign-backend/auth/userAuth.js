@@ -4,7 +4,6 @@ const secret = "mahendra-sajjad"
 
 
 exports.generateToken = ({id})=>{
-    console.log("h")
     return jwt.sign({id}, secret)
 }
 

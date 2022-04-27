@@ -15,8 +15,8 @@ router.post("/signup", async(req, res)=>{
             return res.status(403).send({status:"user with this email already exists"})
         }
 
-        const {password, cpassword} = signupDetails
-        if(password === cpassword){
+        const {password} = signupDetails
+        if(password){
             success = true
             const hashedPassword = await bcrypt.hash(password, salting)
             let authToken = generateToken(signupDetails)
@@ -36,6 +36,7 @@ router.post("/signin", async (req, res)=>{
     const detailFromDB = await User.findOne({email})
     let success = false
     if(detailFromDB){
+        console.log("signin")
         const isValid = await bcrypt.compare(password, detailFromDB.password)
         if(isValid){
             success = true

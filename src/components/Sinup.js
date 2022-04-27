@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom';
 import './Sinup.css'
 
 const Sinup = ({ signupData }) => {
-  const { inputs, setInputs, handleChange, handleSubmit, emailRef } = signupData;
-
+  
+  const { inputs, handleChange, handleSubmit, isLoggedIn } = signupData;
+  
   return (
     <>
 
@@ -19,12 +20,12 @@ const Sinup = ({ signupData }) => {
             <form action="#" onSubmit={handleSubmit}>
               <div className="sign_input_box">
                 <span>First Name</span>
-                <input value={inputs.fName} autoFocus ref={emailRef} name="fName" type="text" required onChange={handleChange} />
+                <input value={inputs.fName} autoFocus name="firstName" type="text" required onChange={handleChange} />
               </div>
 
               <div className="sign_input_box">
                 <span>Last Name</span>
-                <input value={inputs.lName} name="lName" type="text" onChange={handleChange} />
+                <input value={inputs.lName} name="lastName" type="text" onChange={handleChange} />
               </div>
 
               <div className="sign_input_box">

@@ -1,16 +1,22 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import './Header.css'
 
-const Header = () => {
-
-    return (
+const Header = ({signupData}) => {
+    
+    const {isLoggedIn} = signupData
+    const navigate = useNavigate()
+    useEffect(()=>{
+        if(isLoggedIn){
+            navigate("/")
+        }
+    })
+    return (//isLoggedIn &&
         <>
 
             <div className="topnav" id="myTopnav" >
                 <a href="#home" className="active">Home</a>
-                <Link to='/signup'>Sign Up</Link>
-                <Link to='/login'>Sign In</Link>
+                {isLoggedIn ? "" : <><Link to='/signup'>Sign Up</Link><Link to='/login'>Sign In</Link></>}
                 <a href="#about">About</a>
                 <a href="#contact">Contact</a>
                 <a href="#" className="icon" >
